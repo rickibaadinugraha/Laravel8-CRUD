@@ -25,7 +25,41 @@
     @endif
     <form action="{{ route('projects.store') }}" method="POST" >
         @csrf
-        <div>
+        <div class="row">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>No Transaksi</strong>
+                        <input type="text" name="kode_produk" class="form-control" placeholder="Kode Produk">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Tanggal Transaksi</strong>
+                        <input type="text" name="kode_produk" class="form-control" placeholder="Kode Produk">
+                    </div>
+                </div>
+                <div class="mx-auto pull-right">
+                    <div class="">
+                        <form action="{{ route('projects.index') }}" method="GET" role="search">
+                            <div class="input-x">
+                                <span class="input-group-btnx mr-0 mt-1">
+                                    <button class="btn btn-info" type="submit" title="Search projects">
+                                        <span class="fas fa-search"></span>
+                                    </button>
+                                </span>
+                                <input type="text" class="form-controlx mr-2" name="term" placeholder="Search projects" id="term" style="display:">
+                                <a href="{{ route('projects.index') }}" class=" mt-1">
+                                    <span class="input-group-btnx">
+                                        <button class="btn btn-danger" type="button" title="Refresh page">
+                                            <span class="fas fa-sync-alt"></span>
+                                        </button>
+                                    </span>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Kode Produk</strong>
@@ -46,13 +80,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Gambar</strong>
-                    <input type="file" name="file_img_produk" class="form-control" placeholder="file_img_produk">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Stock Produk</strong>
+                    <strong>Kuantiti</strong>
                     <input type="text" name="stock_aktual" class="form-control" placeholder="stock_aktual">
                 </div>
             </div>
@@ -64,3 +92,4 @@
 
     </form>
 @endsection
+

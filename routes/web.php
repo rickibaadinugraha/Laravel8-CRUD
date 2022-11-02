@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,8 @@ Route::get('/', function () {
 
 
 Route::resource('projects', ProjectController::class);
+Route::resource('transactions', TransactionController::class);
+
 
 // Route::resource('projects', 'ProjectController');
 

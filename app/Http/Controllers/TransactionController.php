@@ -6,14 +6,40 @@ use App\Models\Project;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function getAutoNumberOptions()
+    {
+        return [
+            'code' => [
+                'format' => 'SO.?', // format kode
+                'length' => 4 // jumlah digit
+            ]
+        ];
+    }
     public function index(Request $request)
+    {
+        if ($request->has('search')) {
+            $project = Project::where('nama', 'LIKE', '%' .$request->search.'%')->paginate(5);
+        }else{
+            $project = Project::paginate(5);
+        }
+
+        $projects = Project::with('detail_transactions')->get();
+        return view('transactions.index', compact('projects'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
     {
         $projects = Project::where([
             ['kode_produk', '!=', Null],
@@ -25,21 +51,7 @@ class ProjectController extends Controller
         ])  ->orderBy("id", "desc")
             ->paginate(10);
 
-        // $projects = Project::with('stocks')->get();
-        // dd($projects);
-        return view('projects.index', compact('projects'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        $project = Project::all();
-        $stocks = Stock::all();
-        return view('projects.create', compact('project', 'stocks'));
+        return view('transactions.create');
     }
 
     /**
@@ -50,23 +62,17 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $array = $request->only([
+        $request->validate([
             'kode_produk' => 'required',
             'nama_produk' => 'required',
             'harga_produk' => 'required',
-            'stock_aktual' => 'required',
+            // 'cost' => 'required'
         ]);
 
-        Project::create([
-            'kode_produk' => $request->kode_produk,
-            'nama_produk' => $request->nama_produk,
-            'harga_produk' => $request->harga_produk,
-        ]);
-        Stock::create([
-            'kode_produk' => $request->kode_produk,
-            'stock_aktual'  => $request->stock_aktual,
-        ]);
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+        Project::create($request->all());
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Project created successfully.');
     }
 
     /**
@@ -77,7 +83,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        return view('projects.show', compact('project'));
+        return view('transactions.show', compact('project'));
     }
 
     /**
@@ -86,11 +92,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $projects)
     {
-        $stocks = Stock::all();
-        $project = Project::find($id);
-        return view('projects.edit', compact('stocks', 'project'));
+        return view('transactions.edit', compact('projects'));
     }
     /**
      * Update the specified resource in storage.
@@ -99,19 +103,18 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
         $request->validate([
             'kode_produk' => 'required',
+            'nama_produk' => 'required',
             'harga_produk' => 'required',
-            'stock_aktual' => 'required'
+            // 'file_img_produk' => 'required'
         ]);
-        $project = Project::find($id);
-        $project->stocks->stock_aktual = $request->stock_aktual;
-        $project->stocks->save();
         $project->update($request->all());
-        // dd($project);
-        return redirect()->route('projects.index')->with('success', 'Project updated successfully');
+
+        return redirect()->route('transactions.index')
+            ->with('success', 'Project updated successfully');
     }
     /**
      * Remove the specified resource from storage.
@@ -123,7 +126,7 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return redirect()->route('projects.index')
+        return redirect()->route('transactions.index')
             ->with('success', 'Project deleted successfully');
     }
 }

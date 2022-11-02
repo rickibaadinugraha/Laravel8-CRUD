@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', 'Edit Kontrol Produk')
 
 @section('content')
     <div class="row">
@@ -8,7 +7,7 @@
                 <h2>Edit Project</h2>
             </div>
             <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('projects.index') }}" title="Go back"> <i
+                <a class="btn btn-primary" href="{{ route('transactions.index') }}" title="Go back"> <i
                         class="fas fa-backward "></i> </a>
             </div>
         </div>
@@ -24,8 +23,8 @@
             </ul>
         </div>
     @endif
-
-    <form action="{{ route('projects.update', $project->id) }}" method="POST">
+    {{-- <form action="{{ route('projects.update', $project->id) }}" method="POST"> --}}
+    <form action="{{ route('transactions.update', $projects->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -39,7 +38,8 @@
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                     <strong>Nama Produk</strong>
-                    {{ $project->nama_produk }}
+                    <textarea class="form-control" style="height:50px" name="nama_produk"
+                        placeholder="nama_produk">{{ $project->nama_produk }}</textarea>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -51,16 +51,9 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Gambar</strong>
-                    <input type="file" name="file_img_produk" class="form-control" placeholder="{{ $project->file_img_produk }}"
-                        value="{{ $project->file_img_produk }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Stock</strong>
-                    <input type="text" class="form-control @error('stock_aktual') is-invalid @enderror" id="exampleInputName" placeholder="Stock Aktual" name="stock_aktual" value="{{$project->stocks->stock_aktual ?? old('stock_aktual')}}">
-                    @error('stock_aktual') <span class="text-danger">{{$message}}</span> @enderror
+                    <strong>Kuantiti</strong>
+                    <input type="text" name="harga_produk" class="form-control" placeholder="{{ $project->harga_produk }}"
+                        value="{{ $project->harga_produk }}">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">

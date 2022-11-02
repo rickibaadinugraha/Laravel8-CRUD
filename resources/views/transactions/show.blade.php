@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title', 'Show Product')
 
 
 @section('content')
@@ -30,21 +29,21 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Harga Produk</strong>
+                <strong>Harga</strong>
                 {{ $project->harga_produk }}
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-                <strong>Stock</strong>
-                {{ $project->stocks->stock_aktual }}
+                <strong>Qty</strong>
+                {{ $project->id }}
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-12">
+        {{-- <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
                 <strong>Date Created:</strong>
                 {{ date_format($project->created_at, 'jS M Y') }}
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
